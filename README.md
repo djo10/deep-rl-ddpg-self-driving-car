@@ -1,2 +1,6 @@
-# deep-rl-ddpg-self-driving-car
-Deep reinforcement learning - DDPG algorithm with self driving car in Torcs
+# Deep Reinforcement Learning - Deep Deterministic Policy gradient - Torcs Self-driving Car
+
+[Youtube Video](https://www.youtube.com/watch?v=XyvOfroVIwg)
+
+
+## Instalation
