@@ -5,11 +5,11 @@ import keras.backend as keras_backend
 import numpy as np
 import tensorflow as tf
 
-from actor import ActorNetwork
-from critic import CriticNetwork
+from model.actor import ActorNetwork
+from model.critic import CriticNetwork
 from gym_torcs import TorcsEnv
-from noise import OrnsteinUhlenbeckActionNoise
-from replay_buffer import ReplayBuffer
+from util.noise import OrnsteinUhlenbeckActionNoise
+from util.replay_buffer import ReplayBuffer
 
 np.random.seed(1337)
 
@@ -18,21 +18,21 @@ def play(train_indicator):
     buffer_size = 100000
     batch_size = 32
     gamma = 0.99    # discount factor
-    tau = 0.001     # Target Network HyperParameters
+    tau = 0.001     # Target Network HyperParameter
     lra = 0.0001    # Learning rate for Actor
     lrc = 0.001     # Learning rate for Critic
+    ou_sigma = 0.3
 
     action_dim = 1  # Steering angle
     state_dim = 21  # num of sensors input
 
-    episode_count = 2000
+    episodes_num = 2000
     max_steps = 100000
     step = 0
-    ou_sigma = 0.3
 
-    train_stat_file = "train_stat.txt"
-    actor_weights_file = "actor.h5"
-    critic_weights_file = "critic.h5"
+    train_stat_file = "data/train_stat.txt"
+    actor_weights_file = "data/actor.h5"
+    critic_weights_file = "data/critic.h5"
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
@@ -44,6 +44,7 @@ def play(train_indicator):
     critic = CriticNetwork(tf_session=tf_session, state_size=state_dim, action_size=action_dim, hidden_units=(300, 600), tau=tau, lr=lrc)
     buffer = ReplayBuffer(buffer_size)
 
+    # noise function for exploration
     ou = OrnsteinUhlenbeckActionNoise(mu=np.zeros(action_dim), sigma=ou_sigma * np.ones(action_dim))
 
     # Torcs environment - throttle and gear change controlled by client
@@ -58,7 +59,7 @@ def play(train_indicator):
     except:
         print("Cannot load weights")
 
-    for i in range(episode_count):
+    for i in range(episodes_num):
         print("Episode : %s Replay buffer %s" % (i, len(buffer)))
 
         if i % 3 == 0:
@@ -109,7 +110,7 @@ def play(train_indicator):
             total_reward += reward
             state = state1
 
-            print("Episode %s - Step %s - Action %s - Reward %s - Loss %s" % (i, step, action_predicted[0][0], reward, loss))
+            print("Episode %s - Step %s - Action %s - Reward %s" % (i, step, action_predicted[0][0], reward))
 
             step += 1
             if done:
