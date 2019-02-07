@@ -1,6 +1,6 @@
 # Deep Reinforcement Learning - Deep Deterministic Policy gradient - Torcs Self-driving Car
 
-[Youtube Video](https://www.youtube.com/watch?v=XyvOfroVIwg)
+[![Youtube video](http://img.youtube.com/vi/XyvOfroVIwg/0.jpg)](http://www.youtube.com/watch?v=XyvOfroVIwg)
 
 
 ## Instalation
