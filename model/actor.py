@@ -27,7 +27,7 @@ class ActorNetwork:
         self.gradients = zip(self.parameter_gradients, model_weights)
 
         self.optimize = tf.train.AdamOptimizer(self.lr).apply_gradients(self.gradients)
-        self.tf_session.run(tf.initialize_all_variables())
+        self.tf_session.run(tf.global_variables_initializer())
 
     def train(self, states, action_gradients):
         self.tf_session.run(

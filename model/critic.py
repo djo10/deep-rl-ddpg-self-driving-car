@@ -21,7 +21,7 @@ class CriticNetwork:
         self.target_model, _, _ = self.generate_model()
 
         self.critic_gradients = tf.gradients(self.model.output, self.action_input)
-        self.tf_session.run(tf.initialize_all_variables())
+        self.tf_session.run(tf.global_variables_initializer())
 
     def get_gradients(self, states, actions):
         return self.tf_session.run(
